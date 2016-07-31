@@ -1,0 +1,114 @@
+/* 
+  Localizable.strings
+  SmartResto
+
+  Created by Galin Yonchev on 11/19/15.
+  Copyright © 2015 Smart Interactive. All rights reserved.
+*/
+
+// RESTAURANTS VIEW CONTROLLER
+
+RESTAURANTS_FIRST = "Commune Image";
+RESTAURANTS_SECOND = "La Cave Garibaldi";
+
+// MAIN MENU VIEW CONTROLLER
+
+main.details = "QUI SOMMES NOUS ?";
+main.menu = "NOTRE CARTE";
+main.news = "NEWS";
+main.location = "NOUS TROUVER";
+main.reservation = "MES RESERVATIONS";
+
+// DETAILS VIEW CONTROLLER
+
+details.map = "Découvrez la carte";
+
+// LOCATION VIEW CONTROLLER
+
+location.heading = "NOUS TROUVER";
+location.subheading = "HORAIRES";
+
+// RESTAURANT MENU VIEW CONTROLLER
+
+menu.booking = "Rézervez une table";
+
+// NEWS VIEW CONTROLLER
+
+news.heading = "ACTUALITÉS";
+
+// USER ACCOUNT VIEW CONTROLLER
+
+user.heading = "MON COMPTE";
+user.subheading = "INFOS";
+user.firstName = "Nom";
+user.lastName = "Prénom";
+user.address = "Adresse";
+user.code = "Code Postal / Ville";
+user.email = "Email";
+user.phone = "Numéro de téléphone";
+user.push = "Autoriser les info push";
+user.register = "Enregistrer";
+
+// SLIDE MENU VIEW CONTROLLER
+userAccount.home = "Accueil";
+userAccount.profile = "MON COMPTE";
+userAccount.help = "AIDE";
+userAccount.legalNotice = "MENTIONS LÉGALES";
+
+// RESERVATIONS LIST VIEW CONTROLLER
+
+reservations.heading = "MES RÉSERVATIONS";
+reservations.dateAndHour = "Date / Heure";
+reservations.clients = "Couverts";
+reservations.sms = "Partager par SMS";
+reservations.delete = "Supprimer";
+reservations.booking = "Réserver une table";
+
+// BOOKING VIEW CONTROLLER
+
+booking.heading = "RÉSERVATION";
+booking.name = "Nom";
+booking.date = "Date & Heure";
+booking.couverts = "Nombre de couverts";
+booking.comments = "Commentaires additionnels";
+booking.register = "Enregistrer";
+booking.cancel = "Annuler";
+
+// DAYS
+day.monday = "Lundi";
+day.tuesday = "Mardi";
+day.wednesday = "Mercredi";
+day.thursday = "Jeudi";
+day.friday = "Vendredi";
+day.saturday = "Samedi";
+day.sunday = "Dimanche";
+
+// ERRORS
+alert.noInternetConnection = "AUCUNE CONNEXION INTERNET";
+alert.notInternetConnectionString = "ESSAYEZ S'IL VOUS PLAÎT DE NOUVEAU PLUS TARD!";
+alert.connection-button = "OK";
+
+alert.notRegisteredUser = "Pas utilisateur enregistré!";
+alert.user = "Merci de renseigner votre compte pour faire une réservation.";
+alert.user-button = "OK";
+
+alert.notSelectedDate = "Pas date choisie!";
+alert.date = "S'il vous plaît, choisir la date.";
+alert.date-button = "OK";
+
+alert.notSelectedCouverts = "Pas le nombre choisi de réservations!";
+alert.couverts = "Choisissez s'il vous plaît le nombre des réservations.";
+alert.couverts-button = "OK";
+
+<<<<<<< HEAD
+alert.no-internet = "";
+alert.no-internet-button = "";
+=======
+alert.serverTitle = "Erreur de serveur@";
+alert.serverMessage = "Il y avait un problème sur le serveur.";
+alert.server-Button = "OK";
+
+alert.deleteReservationTitle = "Effacez la réservation!";
+alert.deletetReservationMessage = "Voulez-vous effacer la réservation ?";
+alert.delete-Button = "OK";
+>>>>>>> 584c9bcfec7c73184cce87d3ddc45d9b9bd20119

@@ -1,0 +1,48 @@
+
+/* Class = "UILabel"; text = "Some description goes here..."; ObjectID = "2Ou-Kf-goG"; */
+"2Ou-Kf-goG.text" = "Some description goes here...";
+
+/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "4oH-Vh-POI"; */
+"4oH-Vh-POI.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "D3V-mK-22H"; */
+"D3V-mK-22H.text" = "Label";
+
+/* Class = "UILabel"; text = "COMMUNE IMAGE"; ObjectID = "Dl0-Tz-Ymy"; */
+"Dl0-Tz-Ymy.text" = "COMMUNE IMAGE";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "G9c-Mu-KCz"; */
+"G9c-Mu-KCz.text" = "0";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "KUd-nL-khn"; */
+"KUd-nL-khn.text" = "Label";
+
+/* Class = "UILabel"; text = "heading"; ObjectID = "OJy-o9-n5D"; */
+"OJy-o9-n5D.text" = "heading";
+
+/* Class = "UILabel"; text = "INFOS"; ObjectID = "RBu-wi-AHg"; */
+"RBu-wi-AHg.text" = "INFOS";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "S4r-f3-bh0"; */
+"S4r-f3-bh0.text" = "Label";
+
+/* Class = "UILabel"; text = "COMMUNE IMAGE"; ObjectID = "XG5-5V-25H"; */
+"XG5-5V-25H.text" = "COMMUNE IMAGE";
+
+/* Class = "UIButton"; normalTitle = "Nous trouver"; ObjectID = "Z03-Sq-vFC"; */
+"Z03-Sq-vFC.normalTitle" = "Nous trouver";
+
+/* Class = "UIButton"; normalTitle = "Qui sommes nous?"; ObjectID = "b9n-9k-5i2"; */
+"b9n-9k-5i2.normalTitle" = "Qui sommes nous?";
+
+/* Class = "UILabel"; text = "address"; ObjectID = "eOv-KU-4p9"; */
+"eOv-KU-4p9.text" = "address";
+
+/* Class = "UIButton"; normalTitle = "Notre carte"; ObjectID = "eWv-QU-iQs"; */
+"eWv-QU-iQs.normalTitle" = "Notre carte";
+
+/* Class = "UIButton"; normalTitle = "Mes reservations"; ObjectID = "kfd-he-05b"; */
+"kfd-he-05b.normalTitle" = "Mes reservations";
+
+/* Class = "UIButton"; normalTitle = "Agenda / News"; ObjectID = "x7T-sJ-LpP"; */
+"x7T-sJ-LpP.normalTitle" = "Agenda / News";

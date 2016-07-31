@@ -1,0 +1,101 @@
+//
+//  DetailsViewController.swift
+//  SmartResto
+//
+//  Created by Galin Yonchev on 11/19/15.
+//  Copyright © 2015 Smart Interactive. All rights reserved.
+//
+
+import UIKit
+import QuartzCore
+
+class DetailsViewController: UIViewController {
+    
+    @IBOutlet var buttonBooking: UIButton!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var imageLogo: UIImageView!
+    @IBOutlet weak var imageSlider: UIImageView!
+    @IBOutlet weak var labelHeading: UILabel!
+    @IBOutlet weak var labelDescription: UILabel!
+    @IBOutlet weak var constraintHeight: NSLayoutConstraint!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    
+    
+    // MARK: - Navigation
+    
+    func goBack(sender: AnyObject) {
+        self.navigationController?.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    @IBAction func bookTable(sender: AnyObject) {
+        let menuView: RestaurantMenuViewController = self.storyboard?.instantiateViewControllerWithIdentifier("RestaurantMenuViewController") as! RestaurantMenuViewController
+        let navigation = UINavigationController(rootViewController: menuView)
+        self.presentViewController(navigation, animated: true, completion: nil)
+    }
+    
+    // MARK: - Lifecycle
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // setup controls
+        self.view.setupBackground()
+        self.imageLogo.setupLogo()
+        self.setupButtons()
+        self.setupNavigationBar()
+        // load and setup restaurant details
+        self.getBranchImage()
+        
+    }
+
+    override func viewDidAppear(animated: Bool) {
+        self.activityIndicator.startAnimating()
+    }
+    
+    // MARK: - Networking
+
+    // MARK: - Controls
+    
+    func setupButtons() {
+        buttonBooking.setTitle(NSLocalizedString("details.map", comment: ""), forState: UIControlState.Normal)
+        buttonBooking.layer.cornerRadius = 0.1 * buttonBooking.bounds.size.width
+        // setup navigation close button
+        let closeImage = UIImage(named: "icon_close")
+        let closeButton = UIButton(type: UIButtonType.Custom)
+        closeButton.frame = CGRectMake(0, 0, 30, 30)
+        closeButton.setBackgroundImage(closeImage, forState: .Normal)
+        closeButton.addTarget(self, action: "goBack:", forControlEvents: .TouchUpInside)
+        let closeBarButton = UIBarButtonItem(customView: closeButton)
+        self.navigationItem.setRightBarButtonItem(closeBarButton, animated: false)
+    }
+    
+    func setupNavigationBar() {
+        self.navigationController?.hidesBarsOnSwipe = true
+    }
+    
+    func getBranchImage () {
+<<<<<<< HEAD
+        // if we do not have a cached image then load it from the URL
+        // else load the cached image
+        if Manager.sharedInstance.restaurant?.photo == nil {
+            if let photoURL: String = Manager.sharedInstance.restaurant?.photoURL {
+                self.imageSlider.imageFromURL(photoURL, success: { () -> Void in
+                    Manager.sharedInstance.restaurant?.photo = self.imageSlider.image
+                    self.activityIndicator.stopAnimating()
+                    self.activityIndicator.hidden = true
+                })
+
+            }
+        } else {
+            self.imageSlider.image = Manager.sharedInstance.restaurant?.photo!
+            self.activityIndicator.stopAnimating()
+            self.activityIndicator.hidden = true
+        }
+
+
+=======
+        
+        self.imageSlider.imageFromUrl("http://admin.smartresto.fr/download?blobkey=AMIfv94VVpmHqgfGeNffawX-7u6tf1hk5eMadoo0Kw7HKU-iy4kZC8e8E1QyabVHXHLmu--V85BDZZ22X5-zVMChdaZxynUNHaa13heuNaMDDsL3wM36N9Syzi-wM2tcT7zJubbFvAilMndY8zYkvApDjraA1p68E7MO6rqRAlyMvmCAZs7FAH5xS_-5c8L3t5eq9xq0hr50K9uyIbQeTFBz-Gf2DmUD_22fU5bYxVhBHiaMakuY0XeVSFPkWlQ3kHQn-15YbGCeMzQF1_urob1VBQnBM9x0103h5MuO-OdPgtdJvk_d01pLAWG-5OczdT22pCSAjcoekGTZItRlQJ4iF19VxBBOfJBh6Ln8odwd4h0TJLtGJ4A")
+        
+>>>>>>> 94a51a6128daea97684eabb91e415ae2cf03c6ff
+    }
+}

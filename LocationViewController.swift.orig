@@ -1,0 +1,238 @@
+//
+//  LocationViewController.swift
+//  SmartResto
+//
+//  Created by Galin Yonchev on 11/19/15.
+//  Copyright © 2015 Smart Interactive. All rights reserved.
+//
+
+import UIKit
+import MapKit
+import Alamofire
+import CoreLocation
+import MessageUI
+
+<<<<<<< HEAD
+class LocationViewController: UIViewController, CLLocationManagerDelegate, MFMailComposeViewControllerDelegate, MKMapViewDelegate {
+=======
+class LocationViewController: UIViewController, CLLocationManagerDelegate, MFMailComposeViewControllerDelegate, MKMapViewDelegate{
+>>>>>>> 44cc1e5028a2446505b35f4e75e365516032248d
+
+    @IBOutlet var mapView: MKMapView!
+    @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet weak var labelHoursHeading: UILabel!
+    @IBOutlet weak var labelHeading: UILabel!
+    @IBOutlet weak var labelAddress: UILabel!
+    @IBOutlet weak var buttonPhoneNumber: UIButton! // may be button?
+    @IBOutlet weak var buttonEmail: UIButton! // may be button?
+    @IBOutlet weak var labelHours: UILabel!
+    @IBOutlet weak var imageLogo: UIImageView!
+    @IBOutlet weak var constraintHeight: NSLayoutConstraint!
+
+    let regionRadius: CLLocationDistance = 250
+    let branch = Manager.sharedInstance.restaurant
+    
+    @IBAction func dialPhone(sender: AnyObject) {
+        let trimmedPhonNumber = "\(branch!.phone!)".removeExcessiveSpaces
+        if let url = NSURL(string: "tel://\(trimmedPhonNumber)") {
+            UIApplication.sharedApplication().openURL(url)
+        }
+    }
+    
+    @IBAction func sendMail(sender: AnyObject) {
+        let mailComposeViewController = configuredMailComposeViewController()
+        if MFMailComposeViewController.canSendMail() {
+            self.presentViewController(mailComposeViewController, animated: true, completion: nil)
+        } else {
+            AlertHelper.showSendMail(self)
+        }
+    }
+    
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        
+        super.viewDidLoad()
+        // setup UI
+        self.view.setupBackground()
+        self.imageLogo.setupLogo()
+        self.setupNavigationBar()
+        self.setupButtons()
+        self.loadData()
+<<<<<<< HEAD
+        mapView.delegate = self
+=======
+        
+>>>>>>> 44cc1e5028a2446505b35f4e75e365516032248d
+        let locationManager = CLLocationManager()
+        locationManager.delegate = self;
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        
+        mapView.delegate = self
+    }
+    
+    // MARK: - Networking
+    
+    func loadData () {
+        if branch != nil {
+            self.labelHeading.text = branch!.name
+            self.labelAddress.text = branch!.address
+            self.buttonPhoneNumber.setTitle("Tel: " + "\(branch!.phone!)", forState: .Normal)
+            self.buttonEmail.setTitle(branch?.email, forState: .Normal)
+            self.labelHoursHeading.text = NSLocalizedString("location.subheading", comment: "")
+            self.labelHours.text = branch!.workingTime()
+            self.setupMap(branch!.latitude, longitude: branch!.longitude)
+        }
+    }
+    
+    // MARK: - Controls
+    
+    // Displaying Location of the Restaurant and mark it as annotation
+    func setupMap(latitude: Double, longitude: Double) {
+    
+        // display location
+        let initialLocation = CLLocation(latitude: latitude, longitude: longitude)
+        centerMapOnLocation(initialLocation)
+        
+        // add pin annotation
+        let restaurant = Annotation(title: Manager.sharedInstance.restaurantName, coordinate: CLLocationCoordinate2D(latitude: latitude, longitude: longitude))
+        
+//        let pinLocation : CLLocationCoordinate2D = CLLocationCoordinate2DMake(latitude, longitude)
+//        let objectAnnotation = MKPointAnnotation()
+//        objectAnnotation.coordinate = pinLocation
+//        objectAnnotation.title = Manager.sharedInstance.restaurantName
+        
+        //        let url = NSURL(fileURLWithPath: "http://maps.apple.com/ll=\(latitude),\(longitude)")
+        
+        self.mapView.addAnnotation(restaurant)
+        
+    }
+
+    
+    func mapView(mapView: MKMapView!, viewForAnnotation annotation: MKAnnotation!) -> MKAnnotationView! {
+        // 1
+        let identifier = "Annotation"
+        
+        // 2
+        if annotation.isKindOfClass(Annotation) {
+            // 3
+            print("Find it!")
+            var annotationView = mapView.dequeueReusableAnnotationViewWithIdentifier(identifier)
+            
+            if annotationView == nil {
+                //4
+                annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+                annotationView!.canShowCallout = true
+                
+                // 5
+                let btn = UIButton(type: .DetailDisclosure)
+                annotationView!.rightCalloutAccessoryView = btn
+                
+            } else {
+                // 6
+                annotationView!.annotation = annotation
+            }
+            
+            return annotationView
+        }
+        
+        // 7
+        return nil
+    }
+    
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        let restName =  Manager.sharedInstance.restaurantName
+        
+        let ac = UIAlertController(title: restName, message: "Do you want to re-direct to Maps?", preferredStyle: .Alert)
+        ac.addAction(UIAlertAction(title: "OK", style: .Default, handler: nil))
+        presentViewController(ac, animated: true, completion: nil)
+        
+        UIApplication.sharedApplication().openURL(NSURL(fileURLWithPath: "http://maps.apple.com/ll=48.9056153,2.3319707000000562"))
+    }
+    
+    
+    func centerMapOnLocation(location: CLLocation) {
+        let coordinateRegion = MKCoordinateRegionMakeWithDistance(location.coordinate,
+            regionRadius * 2.0, regionRadius * 2.0)
+        mapView.setRegion(coordinateRegion, animated: true)
+    }
+    
+    func setupNavigationBar() {
+        self.navigationController?.hidesBarsOnSwipe = true
+    }
+    
+    func setupButtons() {
+        self.mapView.layer.borderColor = UIColor.blackColor().CGColor
+        self.mapView.layer.borderWidth = 3
+        //
+        labelHours.sizeToFit()
+        // setup navigation close button
+        let closeImage = UIImage(named: "icon_close")
+        let closeButton = UIButton(type: UIButtonType.Custom)
+        closeButton.frame = CGRectMake(0, 0, 30, 30)
+        closeButton.setBackgroundImage(closeImage, forState: .Normal)
+        closeButton.addTarget(self, action: "goBack:", forControlEvents: .TouchUpInside)
+        let closeBarButton = UIBarButtonItem(customView: closeButton)
+        self.navigationItem.setRightBarButtonItem(closeBarButton, animated: false)
+    }
+    
+    // MARK: - Navigation
+    
+    @IBAction func goBack(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    // MARK: MFMailComposeViewControllerDelegate
+    
+    func mailComposeController(controller:MFMailComposeViewController, didFinishWithResult result:MFMailComposeResult, error:NSError?) {
+        switch result.rawValue {
+        case MFMailComposeResultCancelled.rawValue:
+            print("Mail cancelled")
+        case MFMailComposeResultSaved.rawValue:
+            print("Mail saved")
+        case MFMailComposeResultSent.rawValue:
+            print("Mail sent")
+        case MFMailComposeResultFailed.rawValue:
+            print("Mail sent failure: %@", error?.localizedDescription)
+        default:
+            break
+        }
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+    
+    func configuredMailComposeViewController() -> MFMailComposeViewController {
+        let mailComposerVC = MFMailComposeViewController()
+        mailComposerVC.mailComposeDelegate = self
+        let recipient: String = buttonEmail.titleLabel!.text!
+        mailComposerVC.setToRecipients([recipient])
+        return mailComposerVC
+    }
+    
+    // MARK: - Map view delegate
+    
+    func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
+        var view = mapView.dequeueReusableAnnotationViewWithIdentifier("AnnotationView Id")
+        if view == nil{
+            view = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "AnnotationView Id")
+            view!.canShowCallout = true
+        } else {
+            view!.annotation = annotation
+        }
+        
+        view?.leftCalloutAccessoryView = nil
+        view?.rightCalloutAccessoryView = UIButton(type: UIButtonType.DetailDisclosure)
+        //swift 1.2
+        //view?.rightCalloutAccessoryView = UIButton.buttonWithType(UIButtonType.DetailDisclosure) as UIButton
+        
+        return view
+    }
+    
+    func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
+        //I don't know how to convert this if condition to swift 1.2 but you can remove it since you don't have any other button in the annotation view
+        if (control as? UIButton)?.buttonType == UIButtonType.DetailDisclosure {
+            mapView.deselectAnnotation(view.annotation, animated: false)
+            performSegueWithIdentifier("you're segue Id to detail vc", sender: view)
+        }
+    }
+    
+}

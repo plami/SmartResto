@@ -1,0 +1,126 @@
+//
+//  SmartRestoClientAPI.swift
+//  SmartResto
+//
+//  Created by Galin Yonchev on 12/12/15.
+//  Copyright © 2015 Smart Interactive. All rights reserved.
+//
+
+import Foundation
+import Alamofire
+
+class SmartRestoClientAPI {
+    
+    let baseURLString: String = "http://admin.smartresto.fr/rest"
+    
+    class var sharedInstance: SmartRestoClientAPI {
+        struct Static {
+            static var instance: SmartRestoClientAPI?
+            static var token: dispatch_once_t = 0
+        }
+        dispatch_once(&Static.token) {
+            Static.instance = SmartRestoClientAPI()
+            Alamofire.Manager.sharedInstance.session.configuration.HTTPAdditionalHeaders = ["Accept": "application/json", "Content-type": "application/json"]
+        }
+        return Static.instance!
+    }
+    
+    func getBranchDetails(branchID: Int, success: ((branch: Restaurant) -> Void)?, failure: ((NSError) -> Void)?) {
+        
+        Alamofire.request(.GET, baseURLString + "/branch/getById/\(branchID)", parameters: nil).responseJSON { (response) -> Void in
+            
+//            print(response.result.value)
+            if let result = response.result.value {
+                let restaurant = Restaurant(json: result as! Dictionary<String, AnyObject>)
+                success!(branch: restaurant)
+            }
+            if let error = response.result.error {
+                failure!(error)
+            }
+        }
+    }
+    
+    func getBranchNews(branchID: Int, success: ((news: [News]) -> Void)?, failure: ((NSError) -> Void)?) {
+        
+        Alamofire.request(.GET, baseURLString + "/article/getAllByBranch/\(branchID)", parameters: nil).responseJSON { (response) -> Void in
+            if let result = response.result.value as? [[String: AnyObject]] {
+                var newsArray: [News] = []
+                for res in result {
+                    let news = News(json: res)
+                    newsArray.append(news)
+                }
+                success!(news: newsArray)
+            }
+            if let error = response.result.error {
+                failure!(error)
+            }
+        }
+    }
+    
+    func getBranchMenu(branchID: Int, success: ((menu: Menu) -> Void)?, failure: ((NSError) -> Void)?) {
+        Alamofire.request(.GET, baseURLString + "/branch/menu/\(branchID)", parameters: nil).responseJSON { (response) -> Void in
+            //
+        }
+    }
+    
+    func getReservationByID(reservationID: Int, success: ((reservation: Reservation) -> Void)?, failure: ((NSError) -> Void)?) {
+        Alamofire.request(.GET, baseURLString + "/reservation/getById/\(reservationID)", parameters: nil).responseJSON { (response) -> Void in
+            print(response.result.value)
+            if let result = response.result.value as? [String: AnyObject] {
+                let reservation = Reservation(json: result)
+                
+                success!(reservation: reservation)
+            }
+            if let error = response.result.error {
+                failure!(error)
+            }
+        }
+    }
+    
+    func createReservation(restaurantID: Int, date: Double, email: String, firstName: String, lastName: String, address: String, phone: String, couverts: Int, comments: String, success: ((reservation: Reservation) -> Void)?, failure: ((NSError) -> Void)?) {
+        
+        let params = [
+            "idBranch": restaurantID,
+            "date": date,
+            "email": email,
+            "firstname": firstName,
+            "lastname": lastName,
+            "address": address,
+            "phone": phone,
+            "couverts": couverts,
+            "comments": comments
+        ]
+        
+        Alamofire.request(.POST, baseURLString + "/reservation", parameters: params as? [String : AnyObject], encoding: .JSON).responseJSON { (response) -> Void in
+            print(response.result.value)
+            if let result = response.result.value as? [String: AnyObject] {
+                let reservation = Reservation(json: result)
+                reservation.restaurant = Manager.sharedInstance.restaurantName
+                success!(reservation: reservation)
+            }
+            if let error = response.result.error {
+                failure!(error)
+            }
+        }
+    }
+    
+<<<<<<< HEAD
+=======
+//    func getLegalNoticeAndHelp(keyID: String, success: ((legalHelp: LegalNoticeAndHelp) -> Void)?, failure: ((NSError) -> Void)?) {
+//        
+//        Alamofire.request(.GET, "http://smart-resto.appspot.com/rest/property/getByKey/\(keyID)/en", parameters: nil).responseJSON { (response) -> Void in
+//            
+//            print(response.result.value)
+//            if let result = response.result.value {
+//                let legalNoticeOrHelp = LegalNoticeAndHelp(json: result as! [String: AnyObject])
+//                success!(legalHelp: legalNoticeOrHelp)
+//            }
+//                
+//            if let error = response.result.error {
+//                failure!(error)
+//            }
+//        }
+//    }
+>>>>>>> ba8c4c5bc0f87286fa1dfc5bc19c3e705f8ced0a
+}
+

@@ -1,0 +1,79 @@
+//
+//  ExtensionNSDate.swift
+//  SmartResto
+//
+//  Created by Plamena Nikolova on 1/12/16.
+//  Copyright © 2016 Smart Interactive. All rights reserved.
+//
+
+import Foundation
+
+extension NSDate {
+    
+    class func timestampToDate(timeStamp: Double) -> NSDate {
+        let date = NSDate(timeIntervalSince1970:(timeStamp))
+        return date
+    }
+    
+    class func timestampToHour(timeStamp: Double) -> String {
+        let convertedTimeStamp: Double = timeStamp / Double(1000)
+        let date = NSDate(timeIntervalSince1970:(convertedTimeStamp))
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "HH:mm"
+        let dateString = formatter.stringFromDate(date)
+        return dateString
+    }
+    
+    class func timestampToDay(timeStamp: Double) -> String {
+        let convertedTimeStamp: Double = timeStamp / Double(1000)
+        let date = NSDate(timeIntervalSince1970:(convertedTimeStamp))
+        let formatter = NSDateFormatter()
+        formatter.dateFormat = "dd/MM"
+        let dateString = formatter.stringFromDate(date)
+        return dateString
+    }
+    
+    func getDateAndMonth() -> String {
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components([.Day , .Month], fromDate: self)
+        let day = components.day < 10 ? "0\(components.day)" : "\(components.day)"
+        let month = components.month < 10 ? "0\(components.month)" : "\(components.month)"
+        let dateAndMonth = "\(day)" + "/" + "\(month)"
+        
+        return dateAndMonth
+    }
+    
+    func getHourAndMinutes() -> String {
+        let calendar = NSCalendar.currentCalendar()
+        let components = calendar.components([.Hour , .Minute], fromDate: self)
+        let hour = components.hour < 10 ? "0\(components.hour)" : "\(components.hour)"
+        let minutes = components.minute < 10 ? "0\(components.minute)" : "\(components.minute)"
+        let hourAndMinutes = "\(hour)" + ":" + "\(minutes)"
+        return hourAndMinutes
+    }
+<<<<<<< HEAD
+    
+    func isGreaterThanDate(dateToCompare : NSDate) -> Bool
+    {
+        var isGreater = false
+        if self.compare(dateToCompare) == NSComparisonResult.OrderedDescending
+        {
+            isGreater = true
+        }
+        return isGreater
+    }
+    
+    
+    func isLessThanDate(dateToCompare : NSDate) -> Bool
+    {
+        var isLess = false
+        if self.compare(dateToCompare) == NSComparisonResult.OrderedAscending
+        {
+            isLess = true
+        }
+        return isLess
+    }
+    
+=======
+>>>>>>> ba8c4c5bc0f87286fa1dfc5bc19c3e705f8ced0a
+}

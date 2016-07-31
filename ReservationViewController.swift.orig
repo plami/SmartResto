@@ -1,0 +1,186 @@
+//
+//  ReservationViewController.swift
+//  SmartResto
+//
+//  Created by Galin Yonchev on 11/19/15.
+//  Copyright © 2015 Smart Interactive. All rights reserved.
+//
+
+import UIKit
+import MessageUI
+
+class ReservationViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMessageComposeViewControllerDelegate {
+
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var reservations = [Reservation]()
+    
+    func reserveTable(sender: AnyObject) {
+        let bookingView: BookingViewController = self.storyboard?.instantiateViewControllerWithIdentifier(Constants.Controllers.bookingViewController) as! BookingViewController
+        let navigation = UINavigationController(rootViewController: bookingView)
+        self.presentViewController(navigation, animated: true, completion: nil)
+    }
+    
+    func goBack(sender: AnyObject) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+
+    
+    // MARK: - Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        tableView.estimatedSectionHeaderHeight = Constants.ReservationViewController.estimatedSectionHeaderHeight
+        tableView.estimatedSectionHeaderHeight = Constants.ReservationViewController.estimatedSectionHeaderHeight
+        
+        self.view.setupBackground()
+        self.setupButtons()
+        self.setupNavigationBar()
+        
+        // self.loadData()
+        self.registerCustomCell()
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        self.setupReservations()
+    }
+    
+    func setupReservations() {
+        activityIndicator.hidden = false
+        activityIndicator.startAnimating()
+        self.reservations.removeAll()
+        let IDs = Manager.sharedInstance.loadReservationIDs()
+        print("COUNT: \(IDs.count)")
+        for uniqueID in IDs {
+            SmartRestoClientAPI.sharedInstance.getReservationByID(uniqueID, success: { (reservation) -> Void in
+                self.reservations.append(reservation)
+                self.reservations.sortInPlace({$0.date! < $1.date!})
+                self.tableView.reloadData()
+                if uniqueID == IDs.last {
+                    self.activityIndicator.hidden = true
+                    self.activityIndicator.stopAnimating()
+                }
+                }, failure: { (error) -> Void in
+                    // show alert
+            })
+        }
+    }
+    
+    // MARK: - Table View methods
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return reservations.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell: MyReservationTableViewCell = self.tableView.dequeueReusableCellWithIdentifier("reservationCell")! as! MyReservationTableViewCell
+        cell.loadData(reservations[indexPath.row])
+        cell.buttonSMS.addTarget(self, action: "shareViaSMS:", forControlEvents: .TouchUpInside)
+        cell.buttonSMS.tag = indexPath.row
+        cell.buttonCancel.addTarget(self, action: "deleteReservation:", forControlEvents: .TouchUpInside)
+        cell.buttonCancel.tag = indexPath.row
+        return cell
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return Constants.ReservationViewController.heightForRowAtIndexPath
+    }
+    
+    func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let header: HeaderView = HeaderView(size: tableView.frame.size, center: tableView.center)
+        return header
+    }
+    
+    func tableView(tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        let footer: FooterView = FooterView(size: tableView.frame.size, center: tableView.center)
+        footer.btnBook.addTarget(self, action: "reserveTable:", forControlEvents: .TouchUpInside)
+        return footer
+    }
+    
+    func tableView(tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        return Constants.ReservationViewController.heightForFooterInSection
+    }
+    
+    func tableView(tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+        return Constants.ReservationViewController.estimatedHeightForHeaderInSection
+    }
+    
+    func tableView(tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat {
+        return Constants.ReservationViewController.estimatedHeightForFooterInSection
+    }
+    
+    // register custom cell
+    
+    func registerCustomCell() {
+        let reservationCell = UINib(nibName: "MyReservationTableViewCell", bundle: nil)
+        tableView.registerNib(reservationCell, forCellReuseIdentifier: "reservationCell")
+    }
+    
+    // MARK: - Navigation
+    
+    func shareViaSMS(sender: AnyObject) {
+        let messageComposer = MFMessageComposeViewController()
+        if MFMessageComposeViewController.canSendText() {
+            let reservation = Manager.sharedInstance.reservations[sender.tag]
+            let messageBody = "\(Manager.sharedInstance.restaurantName), " + "\(reservation.getDateAndHour())"
+            messageComposer.body = messageBody
+            messageComposer.messageComposeDelegate = self
+            self.presentViewController(messageComposer, animated: false, completion: nil)
+        } else {
+            // Let the user know if his/her device isn't able to send text messages
+<<<<<<< HEAD
+            AlertHelper.showSendSMS(self)
+=======
+            AlertHelper.showSendSMSErrorAlert(self)
+>>>>>>> ba8c4c5bc0f87286fa1dfc5bc19c3e705f8ced0a
+        }
+    }
+    
+    func deleteReservation(sender: AnyObject) {
+<<<<<<< HEAD
+        let alertAction = UIAlertAction(title: NSLocalizedString(NSLocalizedString("alert.ok", comment: ""), comment: ""), style: .Default) { (action) -> Void in
+            Reservation.deleteReservation(sender.tag)
+            self.setupReservations()
+            self.tableView.reloadData()
+        }
+        AlertHelper.showDeleteReservation(self, alertAction: alertAction)
+=======
+        AlertHelper.showDeleteReservation(self)
+        Reservation.deleteReservation(sender.tag)
+        reservations = Manager.sharedInstance.reservations
+        self.tableView.reloadData()
+>>>>>>> ba8c4c5bc0f87286fa1dfc5bc19c3e705f8ced0a
+    }
+    
+    // MFMessageComposeViewControllerDelegate callback - dismisses the view controller when the user is finished with it
+    func messageComposeViewController(controller: MFMessageComposeViewController, didFinishWithResult result: MessageComposeResult) {
+        switch (result.rawValue) {
+        case MessageComposeResultCancelled.rawValue:
+            print("Message was cancelled")
+            self.dismissViewControllerAnimated(true, completion: nil)
+        case MessageComposeResultFailed.rawValue:
+            print("Message failed")
+            self.dismissViewControllerAnimated(true, completion: nil)
+        case MessageComposeResultSent.rawValue:
+            print("Message was sent")
+            self.dismissViewControllerAnimated(true, completion: nil)
+        default:
+            break;
+        }
+    }
+    
+    func setupButtons() {
+//        // setup navigation close button
+        let closeImage = UIImage(named: "icon_close")
+        let closeButton = UIButton(type: UIButtonType.Custom)
+        closeButton.frame = CGRectMake(Constants.ReservationViewController.constCloseButtonZeroFrame, Constants.ReservationViewController.constCloseButtonZeroFrame, Constants.ReservationViewController.constCloseButtonFrame, Constants.ReservationViewController.constCloseButtonFrame)
+        closeButton.setBackgroundImage(closeImage, forState: .Normal)
+        closeButton.addTarget(self, action: "goBack:", forControlEvents: .TouchUpInside)
+        let closeBarButton = UIBarButtonItem(customView: closeButton)
+        self.navigationItem.setRightBarButtonItem(closeBarButton, animated: false)
+    }
+    
+    func setupNavigationBar() {
+        self.navigationController?.hidesBarsOnSwipe = true
+    }
+}
